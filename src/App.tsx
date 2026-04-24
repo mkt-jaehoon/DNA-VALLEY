@@ -14,7 +14,7 @@ const labImage = "/images/lab.webp";
 const trustBadges = [
   "특허 보유",
   "2007년 설립",
-  "광고 전용 혜택",
+  "정보보호 안내",
 ];
 
 const testTypes = [
@@ -33,7 +33,7 @@ const pricingOptions = [
     name: "16종 검사",
     price: "100,000원",
     badge: "추천",
-    description: "광고 보고 문의 시 10만원으로 안내하는 대표 패키지입니다.",
+    description: "폭넓은 유전 경향을 확인하고 싶은 보호자에게 적합합니다.",
     features: ["주요 건강 경향", "행동·생활관리 참고", "결과 리포트"],
   },
   {
@@ -265,9 +265,9 @@ function App() {
             <span>반려견 DNA 검사,</span>
             <span>상담으로 쉽게 시작하세요</span>
           </h1>
-          <p className="hero-copy">집에서 1분 채취, 담당자가 맞는 검사를 안내합니다.</p>
+          <p className="hero-copy">16종/6종 중 우리 아이에게 맞는 항목을 안내합니다.</p>
           <div className="hero-info" aria-label="핵심 안내">
-            <span>광고 전용 10만원</span>
+            <span>상담 후 검사 선택</span>
             <span>키트 택배 발송</span>
             <span>결과 리포트 제공</span>
           </div>
@@ -345,7 +345,7 @@ function App() {
                 </article>
               ))}
             </div>
-            <p className="pricing-note">당근 광고를 보고 문의하셨다면 상담 시 “광고 보고 왔어요”라고 말씀해 주세요.</p>
+            <p className="pricing-note">최종 검사 항목과 진행 방식은 신청 후 담당자가 다시 확인합니다.</p>
           </div>
       </section>
 
@@ -441,7 +441,7 @@ function App() {
         <div className="section-header">
           <p className="eyebrow">검사 신청</p>
           <h2>담당자가 직접 연락드립니다</h2>
-          <p>이름과 연락처를 남기시면 검사 종류·키트 발송·결제 방법을 안내합니다.</p>
+          <p>신청 정보는 담당자 확인용 Google Sheet에 적재됩니다.</p>
         </div>
         <form className="apply-form" onSubmit={handleSubmit}>
           <label>
@@ -581,7 +581,7 @@ function App() {
             </span>
           </label>
           <button className="button button--primary submit-button" type="submit">
-            {status === "submitting" ? "신청 중..." : "상담 신청하기"}
+            {status === "submitting" ? "신청 중..." : "검사 신청하기"}
           </button>
           {status === "success" && (
             <div className="submit-note" role="status">
