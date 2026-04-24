@@ -32,12 +32,16 @@ const pricingOptions = [
   {
     name: "16종 검사",
     price: "100,000원",
+    badge: "추천",
     description: "폭넓은 유전 경향을 확인하고 싶은 보호자에게 적합합니다.",
+    features: ["주요 건강 경향", "행동·생활관리 참고", "결과 리포트"],
   },
   {
     name: "6종 검사",
     price: "상담 후 안내",
+    badge: "핵심",
     description: "핵심 항목 중심으로 확인하고 싶은 경우 상담 후 안내합니다.",
+    features: ["핵심 항목 선별", "담당자 상담", "키트 발송 안내"],
   },
 ];
 
@@ -316,23 +320,33 @@ function App() {
             </article>
           ))}
         </div>
-        <div className="pricing-panel" aria-label="검사 옵션 가격">
-          <div className="pricing-panel-header">
-            <strong>검사 옵션</strong>
-            <span>신청 전 담당자가 최종 확인합니다</span>
+          <div className="pricing-panel" aria-label="검사 옵션 가격">
+            <div className="pricing-panel-header">
+              <div>
+                <span>검사 옵션</span>
+                <strong>원하는 검사를 선택하고 상담을 진행하세요</strong>
+              </div>
+              <a href="#apply">신청하기</a>
+            </div>
+            <div className="pricing-options">
+              {pricingOptions.map((option) => (
+                <article key={option.name}>
+                  <span className="option-badge">{option.badge}</span>
+                  <div>
+                    <h3>{option.name}</h3>
+                    <p>{option.description}</p>
+                  </div>
+                  <strong>{option.price}</strong>
+                  <ul>
+                    {option.features.map((feature) => (
+                      <li key={feature}>{feature}</li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+            <p className="pricing-note">최종 검사 항목과 진행 방식은 신청 후 담당자가 다시 확인합니다.</p>
           </div>
-          <div className="pricing-options">
-            {pricingOptions.map((option) => (
-              <article key={option.name}>
-                <div>
-                  <h3>{option.name}</h3>
-                  <p>{option.description}</p>
-                </div>
-                <strong>{option.price}</strong>
-              </article>
-            ))}
-          </div>
-        </div>
       </section>
 
       <section className="section section-soft">
@@ -486,21 +500,30 @@ function App() {
             <label>
               <input name="preferredTest" type="radio" value="16종 검사" required />
               <span>
-                16종 검사
+                <span>
+                  16종 검사
+                  <small>폭넓은 항목 확인</small>
+                </span>
                 <b>100,000원</b>
               </span>
             </label>
             <label>
               <input name="preferredTest" type="radio" value="6종 검사" />
               <span>
-                6종 검사
+                <span>
+                  6종 검사
+                  <small>핵심 항목 중심</small>
+                </span>
                 <b>상담 후 안내</b>
               </span>
             </label>
             <label>
               <input name="preferredTest" type="radio" value="상담 후 결정" />
               <span>
-                상담 후 결정
+                <span>
+                  상담 후 결정
+                  <small>검사 선택이 어려울 때</small>
+                </span>
                 <b>담당자 확인</b>
               </span>
             </label>
