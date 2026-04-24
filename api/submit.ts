@@ -3,16 +3,16 @@ import { google } from "googleapis";
 
 const spreadsheetId = "1aZud4gJTC0l1IX-FaZuV_Q-WfX7fzCMH_WwqpliW7lU";
 const header = [
-  "신청일시",
-  "문의유형",
-  "이름",
+  "신청 일시",
+  "문의 유형",
+  "보호자 이름",
   "연락처",
   "이메일",
-  "반려견이름",
-  "품종",
-  "희망검사",
+  "반려견 이름",
+  "반려견 품종",
+  "희망 검사 항목",
   "주소",
-  "문의내용",
+  "상세 메모",
 ];
 
 type LeadPayload = {
@@ -67,35 +67,62 @@ async function getSheetsClient() {
   return google.sheets({ version: "v4", auth });
 }
 
-async function getFirstSheetTitle(sheets: ReturnType<typeof google.sheets>) {
+async function getFirstSheet(sheets: ReturnType<typeof google.sheets>) {
   const spreadsheet = await sheets.spreadsheets.get({
     spreadsheetId,
-    fields: "sheets.properties.title",
+    fields: "sheets.properties.sheetId,sheets.properties.title",
   });
 
-  const title = spreadsheet.data.sheets?.[0]?.properties?.title;
+  const properties = spreadsheet.data.sheets?.[0]?.properties;
+  const title = properties?.title;
+  const sheetId = properties?.sheetId;
 
-  if (!title) {
+  if (!title || sheetId === undefined || sheetId === null) {
     throw new Error("No worksheet found.");
   }
 
-  return title;
+  return { title, sheetId };
 }
 
-async function ensureHeader(sheets: ReturnType<typeof google.sheets>, sheetTitle: string) {
-  const range = `${sheetTitle}!A1:J1`;
+async function ensureHeader(
+  sheets: ReturnType<typeof google.sheets>,
+  sheetTitle: string,
+  sheetId: number,
+) {
   const existing = await sheets.spreadsheets.values.get({
     spreadsheetId,
-    range,
+    range: `${sheetTitle}!A1:J1`,
   });
 
-  if (existing.data.values?.[0]?.length) {
-    return;
+  const currentHeader = existing.data.values?.[0] ?? [];
+  const hasHeader = currentHeader.length > 0;
+  const hasEmailColumn = currentHeader.includes("이메일");
+  const dogNameIndex = currentHeader.indexOf("반려견 이름");
+
+  if (hasHeader && !hasEmailColumn && dogNameIndex === 4) {
+    await sheets.spreadsheets.batchUpdate({
+      spreadsheetId,
+      requestBody: {
+        requests: [
+          {
+            insertDimension: {
+              range: {
+                sheetId,
+                dimension: "COLUMNS",
+                startIndex: 4,
+                endIndex: 5,
+              },
+              inheritFromBefore: true,
+            },
+          },
+        ],
+      },
+    });
   }
 
   await sheets.spreadsheets.values.update({
     spreadsheetId,
-    range,
+    range: `${sheetTitle}!A1:J1`,
     valueInputOption: "USER_ENTERED",
     requestBody: {
       values: [header],
@@ -116,9 +143,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const payload = req.body;
     const sheets = await getSheetsClient();
-    const sheetTitle = await getFirstSheetTitle(sheets);
+    const { title: sheetTitle, sheetId } = await getFirstSheet(sheets);
 
-    await ensureHeader(sheets, sheetTitle);
+    await ensureHeader(sheets, sheetTitle, sheetId);
 
     await sheets.spreadsheets.values.append({
       spreadsheetId,
