@@ -249,6 +249,10 @@ p {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.recommend-list article:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
 .card,
 .recommend-list article,
 .history-list article,
@@ -264,6 +268,30 @@ p {
 .recommend-list article,
 .history-list article {
   padding: 16px;
+}
+
+.recommend-list article {
+  display: flex;
+  min-height: 120px;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.recommend-list article:last-child:nth-child(odd) {
+  min-height: 104px;
+}
+
+.recommend-list article,
+.card {
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.recommend-list article:hover,
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 38px rgba(23, 32, 51, 0.1);
 }
 
 .recommend-list span {
@@ -365,18 +393,19 @@ p {
 .trust-section {
   position: relative;
   overflow: hidden;
-  background: #fbfcff;
+  background: #f6f9ff;
 }
 
 .trust-bg {
-  position: absolute;
-  top: 24px;
-  right: -80px;
-  width: 280px;
-  height: 280px;
-  object-fit: cover;
-  opacity: 0.07;
-  pointer-events: none;
+  display: none;
+}
+
+.trust-section .section-header,
+.trust-section .history-list,
+.trust-section .cert-grid,
+.trust-section blockquote {
+  position: relative;
+  z-index: 1;
 }
 
 .history-list {
@@ -679,6 +708,14 @@ footer a {
   .test-grid,
   .cert-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .recommend-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .recommend-list article:last-child:nth-child(odd) {
+    grid-column: auto;
   }
 
   .test-grid {
