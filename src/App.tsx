@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 
 const SUBMIT_ENDPOINT = "/api/submit";
 
@@ -86,9 +86,99 @@ const faqs = [
 
 type SubmitStatus = "idle" | "submitting" | "success" | "error";
 
+type DaumPostcodeData = {
+  zonecode: string;
+  roadAddress: string;
+  jibunAddress: string;
+  buildingName?: string;
+};
+
+declare global {
+  interface Window {
+    daum?: {
+      Postcode: new (options: { oncomplete: (data: DaumPostcodeData) => void }) => {
+        open: () => void;
+        embed: (element: HTMLElement) => void;
+      };
+    };
+  }
+}
+
 function App() {
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [showPrivacy, setShowPrivacy] = useState(false);
+  const [showPostcode, setShowPostcode] = useState(false);
+  const [addressLookupError, setAddressLookupError] = useState("");
+  const postcodeRef = useRef<HTMLInputElement>(null);
+  const addressRef = useRef<HTMLInputElement>(null);
+  const addressDetailRef = useRef<HTMLInputElement>(null);
+  const postcodeLayerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!showPostcode) {
+      return;
+    }
+
+    const renderPostcodeSearch = () => {
+      if (!window.daum?.Postcode) {
+        setAddressLookupError("주소 검색을 불러오지 못했습니다. 주소를 직접 입력해주세요.");
+        setShowPostcode(false);
+        return;
+      }
+
+      if (!postcodeLayerRef.current) {
+        return;
+      }
+
+      new window.daum.Postcode({
+        oncomplete: (data) => {
+          const baseAddress = data.roadAddress || data.jibunAddress;
+          const extraAddress = data.buildingName ? ` (${data.buildingName})` : "";
+
+          if (postcodeRef.current) {
+            postcodeRef.current.value = data.zonecode;
+          }
+
+          if (addressRef.current) {
+            addressRef.current.value = `${baseAddress}${extraAddress}`;
+          }
+
+          addressDetailRef.current?.focus();
+          setShowPostcode(false);
+        },
+      }).embed(postcodeLayerRef.current);
+    };
+
+    if (window.daum?.Postcode) {
+      renderPostcodeSearch();
+      return;
+    }
+
+    const existingScript = document.querySelector<HTMLScriptElement>(
+      'script[data-daum-postcode="true"]',
+    );
+
+    if (existingScript) {
+      existingScript.addEventListener("load", renderPostcodeSearch, { once: true });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+    script.async = true;
+    script.dataset.daumPostcode = "true";
+    script.onload = renderPostcodeSearch;
+    script.onerror = () => {
+      setAddressLookupError("주소 검색을 불러오지 못했습니다. 주소를 직접 입력해주세요.");
+      setShowPostcode(false);
+    };
+    document.head.appendChild(script);
+  }, [showPostcode]);
+
+  const openPostcodeSearch = () => {
+    setAddressLookupError("");
+    setShowPostcode(true);
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -367,9 +457,34 @@ function App() {
           </fieldset>
           <div className="address-fields">
             <p>주소 <span>키트 발송용 선택 입력</span></p>
-            <input name="postcode" type="text" placeholder="우편번호" />
-            <input name="address" type="text" placeholder="주소" />
-            <input name="addressDetail" type="text" placeholder="상세주소" />
+            <div className="postcode-row">
+              <input
+                ref={postcodeRef}
+                name="postcode"
+                type="text"
+                inputMode="numeric"
+                placeholder="우편번호"
+                aria-label="우편번호"
+              />
+              <button type="button" onClick={openPostcodeSearch}>
+                우편번호 찾기
+              </button>
+            </div>
+            <input
+              ref={addressRef}
+              name="address"
+              type="text"
+              placeholder="주소"
+              aria-label="주소"
+            />
+            <input
+              ref={addressDetailRef}
+              name="addressDetail"
+              type="text"
+              placeholder="상세주소"
+              aria-label="상세주소"
+            />
+            {addressLookupError && <small className="field-note">{addressLookupError}</small>}
           </div>
           <label>
             문의 내용
@@ -448,6 +563,26 @@ function App() {
         </p>
         <p>Copyright © 2026 한국DNA밸리. All Rights Reserved.</p>
       </footer>
+
+      {showPostcode && (
+        <div className="modal-backdrop" onClick={() => setShowPostcode(false)}>
+          <section
+            className="postcode-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="우편번호 찾기"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="postcode-modal-header">
+              <strong>우편번호 찾기</strong>
+              <button type="button" onClick={() => setShowPostcode(false)} aria-label="닫기">
+                ×
+              </button>
+            </div>
+            <div ref={postcodeLayerRef} className="postcode-layer" />
+          </section>
+        </div>
+      )}
 
       {showPrivacy && (
         <div className="modal-backdrop" onClick={() => setShowPrivacy(false)}>

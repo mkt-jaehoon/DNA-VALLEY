@@ -686,6 +686,30 @@ blockquote cite {
   font-weight: 700;
 }
 
+.postcode-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 118px;
+  gap: 8px;
+}
+
+.postcode-row button {
+  min-height: 48px;
+  border: 0;
+  border-radius: 8px;
+  background: #1a6fff;
+  color: white;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.field-note {
+  color: #d24b32;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
 .consent button {
   margin-left: 6px;
   border: 0;
@@ -793,6 +817,41 @@ footer a {
 
 .modal p {
   font-size: 14px;
+}
+
+.postcode-modal {
+  width: min(100%, 430px);
+  overflow: hidden;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 24px 70px rgba(7, 27, 58, 0.24);
+}
+
+.postcode-modal-header {
+  display: flex;
+  min-height: 50px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(23, 32, 51, 0.1);
+  padding: 0 14px 0 18px;
+  color: #071b3a;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.postcode-modal-header button {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  background: transparent;
+  color: #52627a;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.postcode-layer {
+  height: 430px;
 }
 
 @media (max-width: 380px) {
