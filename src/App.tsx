@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 
-const APPS_SCRIPT_URL = "";
+const SUBMIT_ENDPOINT = "/api/submit";
 
 const salesPhone = "010-5828-9130";
 const officePhone = "043-236-6828";
@@ -119,21 +119,19 @@ function App() {
       message: String(formData.get("message") || ""),
     };
 
-    if (!APPS_SCRIPT_URL) {
-      setStatus("success");
-      form.reset();
-      return;
-    }
-
     setStatus("submitting");
 
     try {
-      await fetch(APPS_SCRIPT_URL, {
+      const response = await fetch(SUBMIT_ENDPOINT, {
         method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit lead.");
+      }
+
       setStatus("success");
       form.reset();
     } catch {
@@ -293,7 +291,7 @@ function App() {
         <div className="section-header">
           <p className="eyebrow">검사 신청</p>
           <h2>담당자가 직접 연락드립니다</h2>
-          <p>APPS_SCRIPT_URL만 교체하면 Google Sheets 저장 방식으로 동작합니다.</p>
+          <p>신청 정보는 담당자 확인용 Google Sheet에 적재됩니다.</p>
         </div>
         <form className="apply-form" onSubmit={handleSubmit}>
           <label>
