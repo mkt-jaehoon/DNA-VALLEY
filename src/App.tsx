@@ -28,6 +28,19 @@ const testTypes = [
   },
 ];
 
+const pricingOptions = [
+  {
+    name: "16종 검사",
+    price: "100,000원",
+    description: "폭넓은 유전 경향을 확인하고 싶은 보호자에게 적합합니다.",
+  },
+  {
+    name: "6종 검사",
+    price: "상담 후 안내",
+    description: "핵심 항목 중심으로 확인하고 싶은 경우 상담 후 안내합니다.",
+  },
+];
+
 const recommendations = [
   "반려견의 유전적 경향과 생활관리 방향을 미리 상담받고 싶은 보호자",
   "16종과 6종 중 어떤 검사가 맞는지 담당자와 확인하고 싶은 보호자",
@@ -259,7 +272,6 @@ function App() {
               <span key={badge}>{badge}</span>
             ))}
           </div>
-          <p className="hero-price">당근 특가 10만원</p>
           <div className="hero-actions">
             <a className="button button--primary" href="#apply">
               지금 신청하기
@@ -303,6 +315,23 @@ function App() {
               <p>{item.body}</p>
             </article>
           ))}
+        </div>
+        <div className="pricing-panel" aria-label="검사 옵션 가격">
+          <div className="pricing-panel-header">
+            <strong>검사 옵션</strong>
+            <span>신청 전 담당자가 최종 확인합니다</span>
+          </div>
+          <div className="pricing-options">
+            {pricingOptions.map((option) => (
+              <article key={option.name}>
+                <div>
+                  <h3>{option.name}</h3>
+                  <p>{option.description}</p>
+                </div>
+                <strong>{option.price}</strong>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -456,15 +485,24 @@ function App() {
             <legend>희망 검사 항목 *</legend>
             <label>
               <input name="preferredTest" type="radio" value="16종 검사" required />
-              16종 검사
+              <span>
+                16종 검사
+                <b>100,000원</b>
+              </span>
             </label>
             <label>
               <input name="preferredTest" type="radio" value="6종 검사" />
-              6종 검사
+              <span>
+                6종 검사
+                <b>상담 후 안내</b>
+              </span>
             </label>
             <label>
               <input name="preferredTest" type="radio" value="상담 후 결정" />
-              상담 후 결정
+              <span>
+                상담 후 결정
+                <b>담당자 확인</b>
+              </span>
             </label>
           </fieldset>
           <div className="address-fields">
