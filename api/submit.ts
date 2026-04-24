@@ -32,6 +32,30 @@ function clean(value: unknown) {
   return String(value ?? "").trim();
 }
 
+function formatSubmittedDate(value: unknown) {
+  const raw = clean(value);
+  const date = raw ? new Date(raw) : new Date();
+
+  if (Number.isNaN(date.getTime())) {
+    return formatSubmittedDate(undefined);
+  }
+
+  const parts = new Intl.DateTimeFormat("ko-KR", {
+    timeZone: "Asia/Seoul",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    weekday: "short",
+  }).formatToParts(date);
+
+  const year = parts.find((part) => part.type === "year")?.value ?? "";
+  const month = parts.find((part) => part.type === "month")?.value ?? "";
+  const day = parts.find((part) => part.type === "day")?.value ?? "";
+  const weekday = parts.find((part) => part.type === "weekday")?.value ?? "";
+
+  return `${year}-${month}-${day}(${weekday})`;
+}
+
 function readServiceAccount() {
   const raw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
 
@@ -155,7 +179,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       requestBody: {
         values: [
           [
-            clean(payload.submittedAt) || new Date().toISOString(),
+            formatSubmittedDate(payload.submittedAt),
             clean(payload.inquiryType),
             clean(payload.name),
             clean(payload.phone),
