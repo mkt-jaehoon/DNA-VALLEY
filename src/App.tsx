@@ -7,8 +7,6 @@ const officePhone = "043-236-6828";
 const hqMobile = "010-8844-7829";
 const email = "shsmart@hanmail.net";
 
-const heroImage = "/images/hero-mobile.webp";
-const heroImageWide = "/images/hero-desktop.webp";
 const swabImage = "/images/swab-banner.webp";
 const dnaImage = "/images/dna-banner.webp";
 const labImage = "/images/lab.webp";
@@ -154,18 +152,10 @@ function App() {
       </nav>
 
       <section className="hero" id="top">
-        <picture className="hero-media">
-          <source media="(min-width: 768px)" srcSet={heroImageWide} />
-          <img
-            src={heroImage}
-            alt="소파에 앉은 반려견 - 한국DNA밸리 반려견 유전자 검사"
-            fetchPriority="high"
-          />
-        </picture>
-        <div className="hero-overlay" />
         <div className="hero-content">
           <p className="eyebrow">한국DNA밸리 PET 16종 / 6종</p>
           <h1>우리 아이의 타고난 성향, 유전자로 이해해보세요 🐾</h1>
+          <p className="hero-copy">구강 면봉 채취로 시작하는 반려견 유전적 경향 상담</p>
           <div className="trust-badges" aria-label="신뢰 배지">
             {trustBadges.map((badge) => (
               <span key={badge}>{badge}</span>
@@ -179,6 +169,25 @@ function App() {
             <a className="button button--outline" href="tel:01058289130">
               전화 상담 {salesPhone}
             </a>
+          </div>
+        </div>
+        <div className="hero-illustration" aria-hidden="true">
+          <div className="dna-strand">
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
+          <div className="dog-mark">
+            <span />
+            <span />
+            <span />
+            <span />
+            <b />
+          </div>
+          <div className="report-card">
+            <strong>PET DNA</strong>
+            <small>16종 / 6종 검사 상담</small>
           </div>
         </div>
       </section>
