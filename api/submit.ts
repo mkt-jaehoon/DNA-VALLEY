@@ -1,19 +1,11 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { google } from "googleapis";
 
-const spreadsheetId = "1aZud4gJTC0l1IX-FaZuV_Q-WfX7fzCMH_WwqpliW7lU";
-const header = [
-  "신청 일시",
-  "문의 유형",
-  "보호자 이름",
-  "연락처",
-  "이메일",
-  "반려견 이름",
-  "반려견 품종",
-  "희망 검사 항목",
-  "주소",
-  "상세 메모",
-];
+const DEFAULT_SPREADSHEET_ID = "1aZud4gJTC0l1IX-FaZuV_Q-WfX7fzCMH_WwqpliW7lU";
+const DEFAULT_SHEET_NAME = "시트1";
+const ALLOWED_INQUIRY_TYPES = new Set(["구매 문의", "구매 신청", "기타"]);
+const ALLOWED_TEST_TYPES = new Set(["16종 검사", "6종 검사", "상담 후 결정"]);
+const MAX_FIELD_LENGTH = 500;
 
 type LeadPayload = {
   submittedAt?: string;
@@ -28,8 +20,15 @@ type LeadPayload = {
   message?: string;
 };
 
+type CleanLeadPayload = Required<Pick<LeadPayload, "inquiryType" | "name" | "phone" | "preferredTest">> &
+  Pick<LeadPayload, "submittedAt" | "email" | "dogName" | "breed" | "address" | "message">;
+
 function clean(value: unknown) {
   return String(value ?? "").trim();
+}
+
+function cleanField(value: unknown, maxLength = MAX_FIELD_LENGTH) {
+  return clean(value).slice(0, maxLength);
 }
 
 function formatSubmittedDate(value: unknown) {
@@ -72,13 +71,50 @@ function readServiceAccount() {
   return credentials;
 }
 
-function isPayload(body: unknown): body is LeadPayload {
+function getSpreadsheetId() {
+  return clean(process.env.GOOGLE_SPREADSHEET_ID) || DEFAULT_SPREADSHEET_ID;
+}
+
+function getSheetName() {
+  return clean(process.env.GOOGLE_SHEET_NAME) || DEFAULT_SHEET_NAME;
+}
+
+function sheetRange(sheetTitle: string, range: string) {
+  return `'${sheetTitle.replace(/'/g, "''")}'!${range}`;
+}
+
+function parsePayload(body: unknown): CleanLeadPayload | null {
   if (!body || typeof body !== "object") {
-    return false;
+    return null;
   }
 
   const payload = body as LeadPayload;
-  return Boolean(clean(payload.inquiryType) && clean(payload.name) && clean(payload.phone));
+  const inquiryType = cleanField(payload.inquiryType, 30);
+  const name = cleanField(payload.name, 80);
+  const phone = cleanField(payload.phone, 20);
+  const preferredTest = cleanField(payload.preferredTest, 30);
+
+  if (
+    !ALLOWED_INQUIRY_TYPES.has(inquiryType) ||
+    !name ||
+    !/^010-\d{3,4}-\d{4}$/.test(phone) ||
+    !ALLOWED_TEST_TYPES.has(preferredTest)
+  ) {
+    return null;
+  }
+
+  return {
+    submittedAt: cleanField(payload.submittedAt, 40),
+    inquiryType,
+    name,
+    phone,
+    email: cleanField(payload.email, 120),
+    dogName: cleanField(payload.dogName, 80),
+    breed: cleanField(payload.breed, 80),
+    preferredTest,
+    address: cleanField(payload.address, 300),
+    message: cleanField(payload.message, 1000),
+  };
 }
 
 async function getSheetsClient() {
@@ -91,67 +127,17 @@ async function getSheetsClient() {
   return google.sheets({ version: "v4", auth });
 }
 
-async function getFirstSheet(sheets: ReturnType<typeof google.sheets>) {
+async function assertSheetExists(sheets: ReturnType<typeof google.sheets>, spreadsheetId: string, sheetName: string) {
   const spreadsheet = await sheets.spreadsheets.get({
     spreadsheetId,
-    fields: "sheets.properties.sheetId,sheets.properties.title",
+    fields: "sheets.properties.title",
   });
 
-  const properties = spreadsheet.data.sheets?.[0]?.properties;
-  const title = properties?.title;
-  const sheetId = properties?.sheetId;
+  const exists = spreadsheet.data.sheets?.some((sheet) => sheet.properties?.title === sheetName);
 
-  if (!title || sheetId === undefined || sheetId === null) {
-    throw new Error("No worksheet found.");
+  if (!exists) {
+    throw new Error(`Worksheet not found: ${sheetName}`);
   }
-
-  return { title, sheetId };
-}
-
-async function ensureHeader(
-  sheets: ReturnType<typeof google.sheets>,
-  sheetTitle: string,
-  sheetId: number,
-) {
-  const existing = await sheets.spreadsheets.values.get({
-    spreadsheetId,
-    range: `${sheetTitle}!A1:J1`,
-  });
-
-  const currentHeader = existing.data.values?.[0] ?? [];
-  const hasHeader = currentHeader.length > 0;
-  const hasEmailColumn = currentHeader.includes("이메일");
-  const dogNameIndex = currentHeader.indexOf("반려견 이름");
-
-  if (hasHeader && !hasEmailColumn && dogNameIndex === 4) {
-    await sheets.spreadsheets.batchUpdate({
-      spreadsheetId,
-      requestBody: {
-        requests: [
-          {
-            insertDimension: {
-              range: {
-                sheetId,
-                dimension: "COLUMNS",
-                startIndex: 4,
-                endIndex: 5,
-              },
-              inheritFromBefore: true,
-            },
-          },
-        ],
-      },
-    });
-  }
-
-  await sheets.spreadsheets.values.update({
-    spreadsheetId,
-    range: `${sheetTitle}!A1:J1`,
-    valueInputOption: "USER_ENTERED",
-    requestBody: {
-      values: [header],
-    },
-  });
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -160,20 +146,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ ok: false, error: "Method not allowed." });
   }
 
-  if (!isPayload(req.body)) {
+  const payload = parsePayload(req.body);
+
+  if (!payload) {
     return res.status(400).json({ ok: false, error: "Required fields are missing." });
   }
 
   try {
-    const payload = req.body;
+    const spreadsheetId = getSpreadsheetId();
+    const sheetName = getSheetName();
     const sheets = await getSheetsClient();
-    const { title: sheetTitle, sheetId } = await getFirstSheet(sheets);
 
-    await ensureHeader(sheets, sheetTitle, sheetId);
+    await assertSheetExists(sheets, spreadsheetId, sheetName);
 
     await sheets.spreadsheets.values.append({
       spreadsheetId,
-      range: `${sheetTitle}!A:J`,
+      range: sheetRange(sheetName, "A:J"),
       valueInputOption: "USER_ENTERED",
       insertDataOption: "INSERT_ROWS",
       requestBody: {

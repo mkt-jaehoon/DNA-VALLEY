@@ -249,6 +249,11 @@ function App() {
             <span>상담으로 쉽게 시작하세요</span>
           </h1>
           <p className="hero-copy">16종/6종 중 우리 아이에게 맞는 항목을 안내합니다.</p>
+          <div className="hero-info" aria-label="핵심 안내">
+            <span>상담 후 검사 선택</span>
+            <span>키트 택배 발송</span>
+            <span>결과 리포트 제공</span>
+          </div>
           <div className="trust-badges" aria-label="신뢰 배지">
             {trustBadges.map((badge) => (
               <span key={badge}>{badge}</span>
@@ -419,7 +424,9 @@ function App() {
               type="tel"
               required
               inputMode="numeric"
+              minLength={3}
               maxLength={4}
+              pattern="[0-9]{3,4}"
               placeholder="1234"
             />
             <input
@@ -427,7 +434,9 @@ function App() {
               type="tel"
               required
               inputMode="numeric"
+              minLength={4}
               maxLength={4}
+              pattern="[0-9]{4}"
               placeholder="5678"
             />
           </fieldset>
@@ -561,8 +570,7 @@ function App() {
         </p>
         <p>이메일: {email}</p>
         <p>
-          <a href="#">개인정보처리방침</a> | <a href="#">이용약관</a> |{" "}
-          <a href="#">공지사항</a>
+          <a href="/privacy.html">개인정보처리방침</a>
         </p>
         <p>Copyright © 2026 한국DNA밸리. All Rights Reserved.</p>
       </footer>

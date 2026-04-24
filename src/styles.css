@@ -1,6 +1,7 @@
 :root {
   color: #172033;
   background: #f7f9fc;
+  color-scheme: light;
   font-family:
     Pretendard,
     -apple-system,
@@ -24,7 +25,8 @@ html {
 body {
   margin: 0;
   min-width: 320px;
-  background: #f7f9fc;
+  background:
+    linear-gradient(180deg, #f4f7fb 0%, #eef3fb 100%);
 }
 
 a {
@@ -54,10 +56,11 @@ main {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  border-bottom: 1px solid rgba(23, 32, 51, 0.08);
-  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid rgba(23, 32, 51, 0.11);
+  background: rgba(255, 255, 255, 0.96);
   padding: 12px 14px;
   backdrop-filter: blur(14px);
+  box-shadow: 0 8px 22px rgba(23, 32, 51, 0.06);
 }
 
 .brand {
@@ -71,7 +74,7 @@ main {
   display: flex;
   flex: 0 1 auto;
   gap: 9px;
-  color: #40516a;
+  color: #243853;
   font-size: 12px;
   font-weight: 800;
 }
@@ -87,13 +90,23 @@ main {
 
 .hero {
   position: relative;
-  min-height: auto;
+  min-height: 560px;
   overflow: hidden;
   background:
-    radial-gradient(circle at 82% 18%, rgba(255, 184, 0, 0.24), transparent 7rem),
-    radial-gradient(circle at 8% 6%, rgba(232, 240, 254, 0.22), transparent 9rem),
-    linear-gradient(145deg, #071b3a 0%, #0d47a1 56%, #1a6fff 100%);
-  padding: 26px 18px 22px;
+    linear-gradient(180deg, rgba(7, 27, 58, 0.22) 0%, rgba(7, 27, 58, 0.9) 72%),
+    image-set(url("/images/hero-mobile.webp") type("image/webp")),
+    linear-gradient(145deg, #071b3a 0%, #0d47a1 100%);
+  background-position: center top;
+  background-size: cover;
+  padding: 28px 18px 24px;
+}
+
+.hero::after {
+  position: absolute;
+  inset: auto 0 0;
+  height: 58%;
+  background: linear-gradient(180deg, transparent 0%, rgba(7, 27, 58, 0.92) 76%);
+  content: "";
 }
 
 .hero-content {
@@ -101,6 +114,10 @@ main {
   z-index: 2;
   max-width: 440px;
   color: white;
+  display: flex;
+  min-height: 508px;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .eyebrow {
@@ -111,7 +128,7 @@ main {
 }
 
 .hero .eyebrow {
-  color: #e8f0fe;
+  color: #dce9ff;
 }
 
 h1,
@@ -123,10 +140,10 @@ p {
 
 h1 {
   max-width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   color: white;
-  font-size: 25px;
-  line-height: 1.18;
+  font-size: 30px;
+  line-height: 1.16;
   letter-spacing: 0;
   text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
   word-break: keep-all;
@@ -138,13 +155,34 @@ h1 span {
 }
 
 .hero-copy {
-  max-width: 23ch;
-  margin-bottom: 16px;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 15px;
+  max-width: 26ch;
+  margin-bottom: 14px;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 16px;
   font-weight: 800;
-  line-height: 1.42;
+  line-height: 1.5;
   word-break: keep-all;
+}
+
+.hero-info {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 7px;
+  margin-bottom: 14px;
+}
+
+.hero-info span {
+  display: flex;
+  min-height: 34px;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 8px;
+  background: rgba(7, 27, 58, 0.44);
+  padding: 7px 10px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 900;
+  backdrop-filter: blur(8px);
 }
 
 h2 {
@@ -164,7 +202,7 @@ h3 {
 }
 
 p {
-  color: #52627a;
+  color: #40516a;
   font-size: 16px;
   line-height: 1.65;
   word-break: keep-all;
@@ -175,7 +213,7 @@ p {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
-  margin: 16px 0;
+  margin: 0 0 14px;
 }
 
 .trust-badges span {
@@ -186,8 +224,8 @@ p {
   justify-content: center;
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 7px 6px;
+  background: rgba(255, 255, 255, 0.18);
+  padding: 8px 6px;
   color: white;
   font-size: 12px;
   font-weight: 900;
@@ -200,16 +238,21 @@ p {
 }
 
 .hero-price {
-  margin-bottom: 18px;
-  color: #ffb800;
-  font-size: 22px;
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  background: #ffb800;
+  padding: 8px 11px;
+  color: #071b3a;
+  font-size: 23px;
   font-weight: 900;
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
+  text-shadow: none;
 }
 
 .hero-actions {
   display: grid;
-  gap: 10px;
+  gap: 9px;
   max-width: 100%;
 }
 
@@ -354,7 +397,7 @@ p {
 
 .button {
   display: inline-flex;
-  min-height: 48px;
+  min-height: 50px;
   align-items: center;
   justify-content: center;
   border: 0;
@@ -363,29 +406,42 @@ p {
   font-weight: 900;
   text-decoration: none;
   cursor: pointer;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
 }
 
 .button--primary {
   background: #1a6fff;
   color: white;
+  box-shadow: 0 12px 26px rgba(26, 111, 255, 0.28);
 }
 
 .button--outline {
-  border: 1px solid rgba(255, 255, 255, 0.78);
-  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: rgba(7, 27, 58, 0.34);
   color: white;
 }
 
 .section {
-  padding: 38px 18px;
+  padding: 42px 18px;
 }
 
 .section-soft {
-  background: #e8f0fe;
+  background: linear-gradient(180deg, #eef5ff 0%, #e6f0ff 100%);
 }
 
 .section-header {
-  margin-bottom: 18px;
+  margin-bottom: 20px;
+}
+
+.section-header p {
+  max-width: 34rem;
 }
 
 .test-grid,
@@ -413,10 +469,10 @@ p {
 .history-list article,
 .apply-form,
 .faq-list details {
-  border: 1px solid rgba(23, 32, 51, 0.1);
+  border: 1px solid rgba(23, 32, 51, 0.12);
   border-radius: 8px;
   background: white;
-  box-shadow: 0 12px 30px rgba(23, 32, 51, 0.07);
+  box-shadow: 0 10px 24px rgba(23, 32, 51, 0.07);
 }
 
 .card,
@@ -427,7 +483,7 @@ p {
 
 .recommend-list article {
   display: flex;
-  min-height: 120px;
+  min-height: 112px;
   flex-direction: column;
   justify-content: center;
 }
@@ -455,22 +511,22 @@ p {
   height: 30px;
   place-items: center;
   border-radius: 50%;
-  background: white;
-  color: #1a6fff;
+  background: #e8f0fe;
+  color: #0d47a1;
   font-weight: 900;
 }
 
 .recommend-list p {
   margin: 10px 0 0;
   color: #243853;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 800;
 }
 
 .image-banner {
   position: relative;
   display: grid;
-  height: 200px;
+  height: 210px;
   place-items: center;
   overflow: hidden;
   margin-bottom: 24px;
@@ -493,12 +549,14 @@ p {
 .image-banner::after {
   position: absolute;
   inset: 0;
-  background: rgba(26, 111, 255, 0.35);
+  background:
+    linear-gradient(180deg, rgba(7, 27, 58, 0.1), rgba(7, 27, 58, 0.68)),
+    rgba(26, 111, 255, 0.14);
   content: "";
 }
 
 .image-banner--dark::after {
-  background: rgba(30, 30, 30, 0.45);
+  background: linear-gradient(180deg, rgba(7, 27, 58, 0.12), rgba(7, 27, 58, 0.76));
 }
 
 .image-banner span {
@@ -508,6 +566,7 @@ p {
   font-size: 28px;
   font-weight: 900;
   text-align: center;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.42);
 }
 
 .process-list {
@@ -520,20 +579,20 @@ p {
 
 .process-list li {
   display: grid;
-  grid-template-columns: 60px minmax(0, 1fr);
-  gap: 14px;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 13px;
   align-items: center;
 }
 
 .step-icon {
   display: grid;
-  width: 60px;
-  height: 60px;
+  width: 52px;
+  height: 52px;
   place-items: center;
   border-radius: 50%;
   background: #ebf3ff;
   color: #1a6fff;
-  font-size: 36px;
+  font-size: 29px;
 }
 
 .process-list h3,
@@ -542,7 +601,8 @@ p {
 }
 
 .process-list p {
-  font-size: 14px;
+  color: #40516a;
+  font-size: 15px;
 }
 
 .trust-section {
@@ -572,7 +632,7 @@ p {
 
 .history-list article {
   display: grid;
-  grid-template-columns: 66px minmax(0, 1fr);
+  grid-template-columns: 64px minmax(0, 1fr);
   gap: 12px;
   align-items: center;
 }
@@ -584,6 +644,7 @@ p {
 
 .history-list p {
   margin: 0;
+  color: #2f415c;
   font-size: 14px;
   font-weight: 800;
 }
@@ -601,7 +662,7 @@ blockquote {
   border-left: 5px solid #ffb800;
   border-radius: 8px;
   background: #071b3a;
-  padding: 18px;
+  padding: 20px;
 }
 
 blockquote p {
@@ -617,8 +678,8 @@ blockquote cite {
 
 .apply-form {
   display: grid;
-  gap: 14px;
-  padding: 16px;
+  gap: 16px;
+  padding: 18px;
 }
 
 .apply-form label,
@@ -626,7 +687,7 @@ blockquote cite {
   display: grid;
   gap: 7px;
   margin: 0;
-  color: #20324f;
+  color: #172033;
   font-size: 14px;
   font-weight: 900;
 }
@@ -635,25 +696,25 @@ blockquote cite {
 .apply-form select,
 .apply-form textarea {
   width: 100%;
-  min-height: 48px;
-  border: 1px solid rgba(23, 32, 51, 0.16);
+  min-height: 50px;
+  border: 1px solid rgba(23, 32, 51, 0.2);
   border-radius: 8px;
   padding: 12px;
   color: #172033;
-  background: white;
+  background: #fff;
   resize: vertical;
 }
 
 .apply-form input:focus,
 .apply-form select:focus,
 .apply-form textarea:focus {
-  outline: 3px solid rgba(26, 111, 255, 0.18);
+  outline: 3px solid rgba(26, 111, 255, 0.24);
   border-color: #1a6fff;
 }
 
 .phone-fields,
 .radio-group {
-  border: 1px solid rgba(23, 32, 51, 0.12);
+  border: 1px solid rgba(23, 32, 51, 0.16);
   border-radius: 8px;
   padding: 12px;
 }
@@ -670,7 +731,7 @@ blockquote cite {
 
 .phone-fields span {
   display: grid;
-  min-height: 48px;
+  min-height: 50px;
   place-items: center;
   border-radius: 8px;
   background: #e8f0fe;
@@ -682,7 +743,8 @@ blockquote cite {
 .consent {
   grid-template-columns: 18px minmax(0, 1fr);
   align-items: start;
-  font-weight: 700;
+  font-weight: 800;
+  line-height: 1.55;
 }
 
 .radio-group input,
@@ -704,7 +766,7 @@ blockquote cite {
 }
 
 .address-fields span {
-  color: #758399;
+  color: #5d6f86;
   font-size: 12px;
   font-weight: 700;
 }
@@ -716,7 +778,7 @@ blockquote cite {
 }
 
 .postcode-row button {
-  min-height: 48px;
+  min-height: 50px;
   border: 0;
   border-radius: 8px;
   background: #1a6fff;
@@ -751,7 +813,7 @@ blockquote cite {
   background: #e8f0fe;
   padding: 12px;
   color: #173b78;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.55;
 }
 
@@ -773,28 +835,29 @@ blockquote cite {
 }
 
 .faq-list details {
-  padding: 14px 16px;
+  padding: 15px 16px;
 }
 
 .faq-list summary {
   color: #132642;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 900;
   cursor: pointer;
 }
 
 .faq-list p {
   margin: 10px 0 0;
-  font-size: 14px;
+  color: #40516a;
+  font-size: 15px;
 }
 
 .legal-note {
   margin: 0 18px 28px;
   border-radius: 8px;
-  background: #f5f5f5;
+  background: #f4f7fb;
   padding: 20px;
-  color: #888;
-  font-size: 12px;
+  color: #5d6f86;
+  font-size: 13px;
   line-height: 1.7;
 }
 
@@ -812,7 +875,8 @@ footer strong {
 
 footer p {
   margin: 0;
-  font-size: 12px;
+  color: #52627a;
+  font-size: 13px;
 }
 
 footer a {
@@ -892,11 +956,11 @@ footer a {
   }
 
   h1 {
-    font-size: 23px;
+    font-size: 27px;
   }
 
   .hero-price {
-    font-size: 20px;
+    font-size: 21px;
   }
 
   .trust-badges span {
@@ -915,17 +979,29 @@ footer a {
   }
 
   .hero {
-    padding: 44px 40px;
+    min-height: 620px;
+    background:
+      linear-gradient(90deg, rgba(7, 27, 58, 0.86) 0%, rgba(7, 27, 58, 0.64) 46%, rgba(7, 27, 58, 0.14) 100%),
+      image-set(url("/images/hero-desktop.webp") type("image/webp")),
+      linear-gradient(145deg, #071b3a 0%, #0d47a1 100%);
+    background-position: center;
+    background-size: cover;
+    padding: 54px 40px;
+  }
+
+  .hero::after {
+    display: none;
   }
 
   .hero-content {
     max-width: 590px;
-    padding: 0;
+    min-height: 512px;
+    justify-content: center;
   }
 
   h1 {
-    max-width: 16ch;
-    font-size: 36px;
+    max-width: 17ch;
+    font-size: 44px;
   }
 
   h2 {
@@ -934,6 +1010,11 @@ footer a {
 
   .hero-actions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 520px;
+  }
+
+  .hero-info {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     max-width: 520px;
   }
 
@@ -951,7 +1032,7 @@ footer a {
   }
 
   .hero-illustration {
-    display: block;
+    display: none;
     right: 34px;
     bottom: 28px;
     width: 260px;
@@ -960,7 +1041,7 @@ footer a {
   }
 
   .report-card {
-    display: grid;
+    display: none;
   }
 
   .section {

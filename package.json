@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "tsc -b && vite build",
+    "typecheck": "tsc -b",
+    "build": "npm run typecheck && vite build",
     "optimize:images": "node scripts/optimize-images.mjs",
+    "setup:sheet": "node scripts/setup-sheet.mjs",
     "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {
