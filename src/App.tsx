@@ -12,9 +12,9 @@ const dnaImage = "/images/dna-banner.webp";
 const labImage = "/images/lab.webp";
 
 const trustBadges = [
-  "🏛 특허 보유 기업 (특허증 3건)",
-  "🔬 생명공학 전문기업 (2007년~)",
-  "🔒 유전정보 보호법 준수",
+  "특허 보유",
+  "2007년 설립",
+  "정보보호 안내",
 ];
 
 const testTypes = [
@@ -244,14 +244,17 @@ function App() {
       <section className="hero" id="top">
         <div className="hero-content">
           <p className="eyebrow">한국DNA밸리 PET 16종 / 6종</p>
-          <h1>우리 아이의 타고난 성향, 유전자로 이해해보세요 🐾</h1>
-          <p className="hero-copy">구강 면봉 채취로 시작하는 반려견 유전적 경향 상담</p>
+          <h1>
+            <span>반려견 DNA 검사,</span>
+            <span>상담으로 쉽게 시작하세요</span>
+          </h1>
+          <p className="hero-copy">16종/6종 중 우리 아이에게 맞는 항목을 안내합니다.</p>
           <div className="trust-badges" aria-label="신뢰 배지">
             {trustBadges.map((badge) => (
               <span key={badge}>{badge}</span>
             ))}
           </div>
-          <p className="hero-price">당근 광고 특가 ₩100,000</p>
+          <p className="hero-price">당근 특가 10만원</p>
           <div className="hero-actions">
             <a className="button button--primary" href="#apply">
               지금 신청하기

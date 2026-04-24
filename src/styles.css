@@ -17,6 +17,8 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -54,13 +56,13 @@ main {
   gap: 12px;
   border-bottom: 1px solid rgba(23, 32, 51, 0.08);
   background: rgba(255, 255, 255, 0.94);
-  padding: 12px 16px;
+  padding: 12px 14px;
   backdrop-filter: blur(14px);
 }
 
 .brand {
   color: #0c2e67;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 900;
   text-decoration: none;
 }
@@ -68,15 +70,19 @@ main {
 .site-nav div {
   display: flex;
   flex: 0 1 auto;
-  gap: 10px;
+  gap: 9px;
   color: #40516a;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 800;
 }
 
 .site-nav a {
   white-space: nowrap;
   text-decoration: none;
+}
+
+.site-nav div a:nth-child(2) {
+  display: none;
 }
 
 .hero {
@@ -87,7 +93,7 @@ main {
     radial-gradient(circle at 82% 18%, rgba(255, 184, 0, 0.24), transparent 7rem),
     radial-gradient(circle at 8% 6%, rgba(232, 240, 254, 0.22), transparent 9rem),
     linear-gradient(145deg, #071b3a 0%, #0d47a1 56%, #1a6fff 100%);
-  padding: 24px 18px 22px;
+  padding: 26px 18px 22px;
 }
 
 .hero-content {
@@ -100,7 +106,7 @@ main {
 .eyebrow {
   margin: 0 0 8px;
   color: #1a6fff;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 900;
 }
 
@@ -116,30 +122,38 @@ p {
 }
 
 h1 {
-  max-width: 17ch;
-  margin-bottom: 8px;
+  max-width: 100%;
+  margin-bottom: 10px;
   color: white;
-  font-size: 22px;
-  line-height: 1.22;
+  font-size: 25px;
+  line-height: 1.18;
   letter-spacing: 0;
   text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
+
+h1 span {
+  display: block;
 }
 
 .hero-copy {
-  max-width: 27ch;
-  margin-bottom: 14px;
+  max-width: 23ch;
+  margin-bottom: 16px;
   color: rgba(255, 255, 255, 0.9);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 800;
-  line-height: 1.5;
+  line-height: 1.42;
+  word-break: keep-all;
 }
 
 h2 {
   margin-bottom: 10px;
   color: #071b3a;
-  font-size: 24px;
-  line-height: 1.22;
+  font-size: 23px;
+  line-height: 1.25;
   letter-spacing: 0;
+  word-break: keep-all;
 }
 
 h3 {
@@ -153,33 +167,42 @@ p {
   color: #52627a;
   font-size: 16px;
   line-height: 1.65;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .trust-badges {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
-  margin: 14px 0;
+  margin: 16px 0;
 }
 
 .trust-badges span {
   display: inline-flex;
-  min-height: 32px;
+  min-width: 0;
+  min-height: 36px;
   align-items: center;
+  justify-content: center;
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.2);
-  padding: 7px 9px;
+  padding: 7px 6px;
   color: white;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 900;
+  text-align: center;
   backdrop-filter: blur(8px);
 }
 
+.trust-badges span:nth-child(3) {
+  grid-column: 1 / -1;
+}
+
 .hero-price {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
   color: #ffb800;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 900;
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
 }
@@ -354,7 +377,7 @@ p {
 }
 
 .section {
-  padding: 44px 18px;
+  padding: 38px 18px;
 }
 
 .section-soft {
@@ -860,12 +883,24 @@ footer a {
   }
 
   .site-nav div {
-    gap: 8px;
-    font-size: 12px;
+    gap: 7px;
+    font-size: 11px;
   }
 
   .brand {
-    font-size: 15px;
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 23px;
+  }
+
+  .hero-price {
+    font-size: 20px;
+  }
+
+  .trust-badges span {
+    font-size: 11px;
   }
 }
 
@@ -900,6 +935,19 @@ footer a {
   .hero-actions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     max-width: 520px;
+  }
+
+  .site-nav div a:nth-child(2) {
+    display: inline;
+  }
+
+  .trust-badges {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 520px;
+  }
+
+  .trust-badges span:nth-child(3) {
+    grid-column: auto;
   }
 
   .hero-illustration {
