@@ -39,7 +39,7 @@ function readServiceAccount() {
     throw new Error("GOOGLE_SERVICE_ACCOUNT_JSON is not configured.");
   }
 
-  const credentials = JSON.parse(raw);
+  const credentials = JSON.parse(raw.replace(/^\uFEFF+/, "").trim());
 
   if (typeof credentials.private_key === "string") {
     credentials.private_key = credentials.private_key.replace(/\\n/g, "\n");
