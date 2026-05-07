@@ -4,7 +4,7 @@ import { google } from "googleapis";
 const DEFAULT_SPREADSHEET_ID = "1aZud4gJTC0l1IX-FaZuV_Q-WfX7fzCMH_WwqpliW7lU";
 const DEFAULT_SHEET_NAME = "시트1";
 const ALLOWED_INQUIRY_TYPES = new Set(["구매 문의", "구매 신청", "기타"]);
-const ALLOWED_TEST_TYPES = new Set(["16종 검사", "6종 검사", "상담 후 결정"]);
+const ALLOWED_TEST_TYPES = new Set(["16종 검사", "상담 후 결정"]);
 const MAX_FIELD_LENGTH = 500;
 
 type LeadPayload = {

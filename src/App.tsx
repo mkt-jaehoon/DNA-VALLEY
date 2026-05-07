@@ -3,9 +3,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 const SUBMIT_ENDPOINT = "/api/submit";
 
 const salesPhone = "010-5828-9130";
-const officePhone = "043-236-6828";
-const hqMobile = "010-8844-7829";
-const email = "shsmart@hanmail.net";
+const email = "korea91300@naver.com";
 
 const swabImage = "/images/swab-banner.webp";
 const dnaImage = "/images/dna-banner.webp";
@@ -22,10 +20,6 @@ const testTypes = [
     title: "16종 검사",
     body: "녹내장, 관절염, 비만, 아토피, 분리불안 등 폭넓은 항목의 유전적 경향을 확인하는 패키지입니다.",
   },
-  {
-    title: "6종 검사",
-    body: "진행성 망막 위축증, 퇴행성 골수염, 고관절이형성증 등 핵심 항목을 선별한 패키지입니다.",
-  },
 ];
 
 const pricingOptions = [
@@ -36,18 +30,11 @@ const pricingOptions = [
     description: "폭넓은 유전 경향을 확인하고 싶은 보호자에게 적합합니다.",
     features: ["주요 건강 경향", "행동·생활관리 참고", "결과 리포트"],
   },
-  {
-    name: "6종 검사",
-    price: "상담 후 안내",
-    badge: "핵심",
-    description: "핵심 항목 중심으로 확인하고 싶은 경우 상담 후 안내합니다.",
-    features: ["핵심 항목 선별", "담당자 상담", "키트 발송 안내"],
-  },
 ];
 
 const recommendations = [
   "반려견의 유전적 경향과 생활관리 방향을 미리 상담받고 싶은 보호자",
-  "16종과 6종 중 어떤 검사가 맞는지 담당자와 확인하고 싶은 보호자",
+  "검사 항목과 절차를 담당자와 확인하고 싶은 보호자",
   "키트 발송, 채취, 결과 리포트 확인까지 한 번에 안내받고 싶은 보호자",
 ];
 
@@ -80,8 +67,8 @@ const faqs = [
     "아래 신청 폼을 작성하시면 담당자가 직접 연락드려 안내해 드립니다. 키트는 택배로 수령하시고, 구강 면봉으로 간편하게 채취 후 반송하시면 됩니다.",
   ],
   [
-    "16종과 6종의 차이는 무엇인가요?",
-    "16종은 녹내장, 관절염, 비만, 아토피, 분리불안 등 전체 항목을 검사하며, 6종은 진행성 망막 위축증, 퇴행성 골수염, 고관절이형성증 등 핵심 항목만 선별한 패키지입니다.",
+    "16종 검사는 어떤 항목을 확인하나요?",
+    "녹내장, 관절염, 비만, 아토피, 분리불안 등 반려견에게 자주 나타나는 유전적 경향을 16개 항목으로 확인합니다. 결과 리포트에는 항목별 설명과 생활관리 참고 정보가 포함됩니다.",
   ],
   [
     "결과는 어떻게 받나요?",
@@ -260,12 +247,12 @@ function App() {
 
       <section className="hero" id="top">
         <div className="hero-content">
-          <p className="eyebrow">한국DNA밸리 PET 16종 / 6종</p>
+          <p className="eyebrow">한국DNA밸리 PET 16종 검사</p>
           <h1>
             <span>반려견 DNA 검사,</span>
             <span>상담으로 쉽게 시작하세요</span>
           </h1>
-          <p className="hero-copy">16종/6종 중 우리 아이에게 맞는 항목을 안내합니다.</p>
+          <p className="hero-copy">16종 항목으로 우리 아이의 유전적 경향을 확인합니다.</p>
           <div className="hero-info" aria-label="핵심 안내">
             <span>상담 후 검사 선택</span>
             <span>키트 택배 발송</span>
@@ -301,7 +288,7 @@ function App() {
           </div>
           <div className="report-card">
             <strong>PET DNA</strong>
-            <small>16종 / 6종 검사 상담</small>
+            <small>16종 검사 상담</small>
           </div>
         </div>
       </section>
@@ -309,8 +296,8 @@ function App() {
       <section className="section" id="tests">
         <div className="section-header">
           <p className="eyebrow">검사종류</p>
-          <h2>16종 / 6종 중 상담 후 선택</h2>
-          <p>검사 항목 선택이 어렵다면 담당자 상담 후 결정하셔도 됩니다.</p>
+          <h2>반려견 PET 16종 유전자 검사</h2>
+          <p>한 번의 구강 채취로 16개 항목의 유전적 경향을 확인합니다.</p>
         </div>
         <div className="test-grid">
           {testTypes.map((item) => (
@@ -508,21 +495,11 @@ function App() {
               </span>
             </label>
             <label>
-              <input name="preferredTest" type="radio" value="6종 검사" />
-              <span>
-                <span>
-                  6종 검사
-                  <small>핵심 항목 중심</small>
-                </span>
-                <b>상담 후 안내</b>
-              </span>
-            </label>
-            <label>
               <input name="preferredTest" type="radio" value="상담 후 결정" />
               <span>
                 <span>
                   상담 후 결정
-                  <small>검사 선택이 어려울 때</small>
+                  <small>안내가 필요한 경우</small>
                 </span>
                 <b>담당자 확인</b>
               </span>
@@ -626,8 +603,7 @@ function App() {
           기업연구관II 504·505호
         </p>
         <p>
-          전화: <a href="tel:0432366828">{officePhone}</a> /{" "}
-          <a href="tel:01088447829">{hqMobile}</a>
+          전화: <a href="tel:01058289130">{salesPhone}</a>
         </p>
         <p>이메일: {email}</p>
         <p>
