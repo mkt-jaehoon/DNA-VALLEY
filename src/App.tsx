@@ -253,22 +253,12 @@ function App() {
             <span>상담으로 쉽게 시작하세요</span>
           </h1>
           <p className="hero-copy">16종 항목으로 우리 아이의 유전적 경향을 확인합니다.</p>
-          <div className="hero-info" aria-label="핵심 안내">
-            <span>상담 후 검사 선택</span>
-            <span>키트 택배 발송</span>
-            <span>결과 리포트 제공</span>
-          </div>
-          <div className="trust-badges" aria-label="신뢰 배지">
-            {trustBadges.map((badge) => (
-              <span key={badge}>{badge}</span>
-            ))}
-          </div>
           <div className="hero-actions">
             <a className="button button--primary" href="#apply">
               지금 신청하기
             </a>
-            <a className="button button--outline" href="tel:01058289130">
-              전화 상담 {salesPhone}
+            <a className="hero-tel" href="tel:01058289130">
+              또는 ☎ {salesPhone}
             </a>
           </div>
         </div>
@@ -292,6 +282,12 @@ function App() {
           </div>
         </div>
       </section>
+
+      <div className="trust-strip" aria-label="인증">
+        {trustBadges.map((badge) => (
+          <span key={badge}>{badge}</span>
+        ))}
+      </div>
 
       <section className="section" id="tests">
         <div className="section-header">
