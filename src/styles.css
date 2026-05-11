@@ -118,6 +118,7 @@ main {
   color: #1a6fff;
   font-size: 13px;
   font-weight: 700;
+  letter-spacing: 0.04em;
 }
 
 .hero .eyebrow {
@@ -193,7 +194,7 @@ p {
   justify-content: center;
   padding: 16px 18px;
   background: #fff;
-  border-bottom: 1px solid rgba(23, 32, 51, 0.08);
+  border-bottom: 1px solid rgba(23, 32, 51, 0.12);
 }
 
 .trust-strip span {
@@ -370,6 +371,7 @@ p {
   border-radius: 8px;
   padding: 12px 16px;
   font-weight: 700;
+  letter-spacing: -0.01em;
   text-decoration: none;
   cursor: pointer;
   transition:
@@ -493,7 +495,7 @@ p {
 .pricing-options {
   display: grid;
   gap: 12px;
-  padding: 14px;
+  padding: 18px 16px;
 }
 
 .pricing-options article {
@@ -504,7 +506,7 @@ p {
   border: 1px solid rgba(23, 32, 51, 0.12);
   border-radius: 8px;
   background: #fff;
-  padding: 16px;
+  padding: 20px;
   box-shadow: 0 10px 24px rgba(23, 32, 51, 0.06);
 }
 
@@ -526,6 +528,7 @@ p {
   margin-bottom: 6px;
   color: #071b3a;
   font-size: 20px;
+  font-weight: 500;
 }
 
 .pricing-options p {
@@ -716,7 +719,7 @@ p {
   border-radius: 50%;
   background: #ebf3ff;
   color: #1a6fff;
-  font-size: 29px;
+  font-size: 24px;
 }
 
 .process-list h3,
@@ -1002,10 +1005,34 @@ blockquote cite {
 }
 
 .faq-list summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   color: #132642;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
+  list-style: none;
+}
+
+.faq-list summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-list summary::after {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #758399;
+  border-bottom: 2px solid #758399;
+  transform: rotate(45deg);
+  transition: transform 200ms ease;
+  content: "";
+}
+
+.faq-list details[open] summary::after {
+  transform: rotate(-135deg);
 }
 
 .faq-list p {
@@ -1121,6 +1148,18 @@ footer a {
   h1 {
     font-size: 27px;
   }
+
+  .hero-copy {
+    font-size: 15px;
+  }
+
+  .section {
+    padding: 36px 14px;
+  }
+
+  .pricing-panel-header strong {
+    font-size: 18px;
+  }
 }
 
 @media (min-width: 768px) {
@@ -1206,12 +1245,8 @@ footer a {
   }
 
   .pricing-options {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .pricing-options article + article {
-    border-top: 1px solid rgba(23, 32, 51, 0.12);
-    border-left: 0;
+    grid-template-columns: minmax(0, 480px);
+    justify-content: center;
   }
 
   .image-banner {

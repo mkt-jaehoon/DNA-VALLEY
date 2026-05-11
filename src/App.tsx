@@ -12,7 +12,7 @@ const labImage = "/images/lab.webp";
 const trustBadges = [
   "특허 보유",
   "2007년 설립",
-  "정보보호 안내",
+  "정보보호 준수",
 ];
 
 const testTypes = [
@@ -26,7 +26,7 @@ const pricingOptions = [
   {
     name: "16종 검사",
     price: "100,000원",
-    badge: "추천",
+    badge: "",
     description: "폭넓은 유전 경향을 확인하고 싶은 보호자에게 적합합니다.",
     features: ["주요 건강 경향", "행동·생활관리 참고", "결과 리포트"],
   },
@@ -258,7 +258,7 @@ function App() {
               지금 신청하기
             </a>
             <a className="hero-tel" href="tel:01058289130">
-              또는 ☎ {salesPhone}
+              전화 상담 {salesPhone}
             </a>
           </div>
         </div>
@@ -303,18 +303,18 @@ function App() {
             </article>
           ))}
         </div>
-          <div className="pricing-panel" aria-label="검사 옵션 가격">
+          <div className="pricing-panel" aria-label="검사 가격 안내">
             <div className="pricing-panel-header">
               <div>
-                <span>검사 옵션</span>
-                <strong>원하는 검사를 선택하고 상담을 진행하세요</strong>
+                <span>검사 안내</span>
+                <strong>16종 검사 구성과 비용을 확인하세요</strong>
               </div>
               <a href="#apply">신청하기</a>
             </div>
             <div className="pricing-options">
               {pricingOptions.map((option) => (
                 <article key={option.name}>
-                  <span className="option-badge">{option.badge}</span>
+                  {option.badge && <span className="option-badge">{option.badge}</span>}
                   <div>
                     <h3>{option.name}</h3>
                     <p>{option.description}</p>
@@ -410,21 +410,13 @@ function App() {
             </article>
           ))}
         </div>
-        <blockquote>
-          <p>
-            "최첨단 생명공학분야의 첨병, 한국DNA밸리입니다. DNA 및 유전체
-            분석기술의 노하우를 바탕으로 유전자 검사를 통한 맞춤 건강관리
-            사업을 운영하고 있습니다."
-          </p>
-          <cite>대표 박상호</cite>
-        </blockquote>
       </section>
 
       <section className="section" id="apply">
         <div className="section-header">
           <p className="eyebrow">검사 신청</p>
           <h2>담당자가 직접 연락드립니다</h2>
-          <p>신청 정보는 담당자 확인용 Google Sheet에 적재됩니다.</p>
+          <p>신청 정보는 담당자가 확인 후 안내드립니다.</p>
         </div>
         <form className="apply-form" onSubmit={handleSubmit}>
           <label>
